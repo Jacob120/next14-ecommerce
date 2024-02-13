@@ -36,6 +36,7 @@ export default async function ProductPage({
 	return (
 		<div>
 			<div className="max-w-xs">
+				<h1>{product.name}</h1>
 				<ProductImage
 					src={product.coverImage.src}
 					alt={product.coverImage.alt}
