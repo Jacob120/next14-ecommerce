@@ -5,9 +5,12 @@ import { getProductsByCategorySlug } from "@/api/products";
 export default async function CategoryPage({
 	params,
 }: {
-	params: { category: string; pageNumber: string };
+	params: { categoryName: string; pageNumber: string };
 }) {
-	const products = await getProductsByCategorySlug(params.category);
+	console.log(params);
+	const products = await getProductsByCategorySlug(
+		params.categoryName,
+	);
 
 	if (!products) {
 		return notFound();

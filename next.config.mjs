@@ -13,11 +13,11 @@ const nextConfig = {
 				destination: "/products/1",
 				permanent: true,
 			},
-			// {
-			// 	source: "/categories/:category",
-			// 	destination: "/categories/:category/1",
-			// 	permanent: true,
-			// },
+			{
+				source: "/categories/:category",
+				destination: "/categories/:category/1",
+				permanent: true,
+			},
 		];
 	},
 	images: {

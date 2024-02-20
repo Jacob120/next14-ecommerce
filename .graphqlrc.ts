@@ -7,7 +7,10 @@ const config: CodegenConfig = {
 	overwrite: true,
 	ignoreNoDocuments: true,
 	schema: "https://graphql.hyperfunctor.com/graphql",
-	documents: "src/graphql/*.graphql",
+	documents: [
+		"src/graphql/**/*.graphql",
+		"src/{app, ui, api, lib}/**/*.{ts,tsx}",
+	],
 	generates: {
 		"src/gql/": {
 			preset: "client",

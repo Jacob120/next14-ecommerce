@@ -2,9 +2,12 @@ import React from "react";
 import { formatCurrency } from "@/utils/formatCurrency";
 import { type ProductListItemFragmentFragment } from "@/gql/graphql";
 
+
 type ProductDescriptionProps = {
 	product: ProductListItemFragmentFragment;
 };
+
+
 
 export const ProductDescription = ({
 	product: { name, categories, price },

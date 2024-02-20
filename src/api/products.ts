@@ -30,17 +30,6 @@ export const getProductsList = async () => {
 		{},
 	);
 	return graphqlResponse.products;
-	// return graphqlResponse.products.data.map((product) => ({
-	// 	id: product.id,
-	// 	name: product.name,
-	// 	price: product.price,
-	// 	category: product.categories[0]?.name,
-	// 	images: {
-	// 		url: product.images[0]?.url,
-	// 		alt: product.images[0]?.alt,
-	// 	},
-	// 	description: "",
-	// }));
 };
 
 export const getProductById = async (
@@ -53,9 +42,6 @@ export const getProductById = async (
 	if (!product.product) {
 		return null;
 	}
-
-	// const { id, name, description, price, categories, images } =
-	// 	product.product;
 
 	return product;
 };
