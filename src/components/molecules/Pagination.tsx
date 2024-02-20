@@ -1,7 +1,7 @@
 import { ActiveLink } from "@/components/atoms/ActiveLink";
 
 type PaginationProps = {
-	currentPage: number;
+	currentPage: number | string;
 	totalPages: number;
 };
 

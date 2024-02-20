@@ -7,7 +7,7 @@ export default async function Layout({
 	children: React.ReactNode;
 }) {
 	const products = await getProductsList();
-	const numOfPages = Math.ceil(products.length / 20);
+	const numOfPages = Math.ceil(products.data.length / 20);
 	return (
 		<>
 			<section>{children}</section>

@@ -1,8 +1,13 @@
 // components/organisms/ProductList.tsx
 import { ProductListItem } from "@/components/molecules/ProductListItem";
-import { type ProductItemType } from "@/components/types";
 
-export const ProductList = ({ products }: { products: ProductItemType[] }) => {
+import { type ProductListItemFragmentFragment } from "@/gql/graphql";
+
+export const ProductList = ({
+	products,
+}: {
+	products: ProductListItemFragmentFragment[];
+}) => {
 	return (
 		<ul
 			data-testid="products-list"

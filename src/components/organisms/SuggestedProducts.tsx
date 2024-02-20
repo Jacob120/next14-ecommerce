@@ -5,5 +5,5 @@ import { getProductsList } from "@/api/products";
 export const SuggestedProductsList = async () => {
 	const products = await getProductsList();
 
-	return <ProductList products={products.slice(-4)} />;
+	return <ProductList products={products.data.slice(-4)} />;
 };

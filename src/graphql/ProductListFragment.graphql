@@ -1,0 +1,5 @@
+# fragment ProductListFragment on Query {
+# 	products {
+# 		...ProductListItemFragment
+# 	}
+# }

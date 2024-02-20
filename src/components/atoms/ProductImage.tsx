@@ -1,7 +1,13 @@
 import React from "react";
 import Image from "next/image";
 
-export const ProductImage = ({ src, alt }: { src: string; alt: string }) => {
+export const ProductImage = ({
+	src,
+	alt,
+}: {
+	src: string;
+	alt: string;
+}) => {
 	return (
 		<div className="aspect-square w-full overflow-hidden rounded-md ">
 			<Image

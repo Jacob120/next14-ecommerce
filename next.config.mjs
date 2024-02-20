@@ -6,11 +6,25 @@ const nextConfig = {
 		typedRoutes: true,
 		mdxRs: true,
 	},
+	redirects: async () => {
+		return [
+			{
+				source: "/products",
+				destination: "/products/1",
+				permanent: true,
+			},
+			// {
+			// 	source: "/categories/:category",
+			// 	destination: "/categories/:category/1",
+			// 	permanent: true,
+			// },
+		];
+	},
 	images: {
 		remotePatterns: [
 			{
 				protocol: "https",
-				hostname: "naszsklep-api.vercel.app",
+				hostname: "static-ourstore.hyperfunctor.com",
 			},
 		],
 	},
