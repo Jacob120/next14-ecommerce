@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
-import { ActiveLink } from "@/components/atoms/ActiveLink";
+import { NavBar } from "@/components/organisms/NavBar";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -18,19 +18,8 @@ export default function RootLayout({
 	return (
 		<html lang="en">
 			<body className={inter.className}>
-				<nav>
-					<ul className="mx-auto my-2 flex w-full justify-center sm:py-4">
-						<li>
-							<ActiveLink href="/">Home</ActiveLink>
-						</li>
-						<li>
-							<ActiveLink href="/products">All</ActiveLink>
-						</li>
-					</ul>
-				</nav>
-				<section className="container mx-auto flex  w-full sm:py-4">
-					{children}
-				</section>
+				<NavBar />
+				<section className=" mx-auto   sm:py-4">{children}</section>
 				<footer className="container mx-auto flex w-full sm:py-4">
 					<p className="mx-auto">
 						© {new Date().getFullYear()} Next.js, Inc.

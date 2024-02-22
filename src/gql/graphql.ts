@@ -272,6 +272,32 @@ export type SortDirection =
   | 'ASC'
   | 'DESC';
 
+export type CategoriesGetListQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type CategoriesGetListQuery = { categories: { data: Array<{ id: string, name: string }> } };
+
+export type CategoryGetByNameQueryVariables = Exact<{
+  slug: Scalars['String']['input'];
+}>;
+
+
+export type CategoryGetByNameQuery = { category?: { id: string, name: string, description: string } | null };
+
+export type CollectionGetByNameQueryVariables = Exact<{
+  slug: Scalars['String']['input'];
+}>;
+
+
+export type CollectionGetByNameQuery = { collection?: { id: string, name: string } | null };
+
+export type CollectionsGetListQueryVariables = Exact<{
+  take?: InputMaybe<Scalars['Int']['input']>;
+}>;
+
+
+export type CollectionsGetListQuery = { collections: { data: Array<{ id: string, name: string }> } };
+
 export type ProductListItemFragmentFragment = { id: string, name: string, price: number, images: Array<{ url: string, alt: string }>, categories: Array<{ id: string, name: string }> };
 
 export type ProductsGetByCategorySlugQueryVariables = Exact<{
@@ -281,6 +307,13 @@ export type ProductsGetByCategorySlugQueryVariables = Exact<{
 
 export type ProductsGetByCategorySlugQuery = { category?: { products: Array<{ id: string, name: string, price: number, images: Array<{ url: string, alt: string }>, categories: Array<{ id: string, name: string }> }> } | null };
 
+export type ProductsGetByCollectionIdQueryVariables = Exact<{
+  collectionId: Scalars['ID']['input'];
+}>;
+
+
+export type ProductsGetByCollectionIdQuery = { collection?: { products: Array<{ id: string, name: string, price: number, categories: Array<{ name: string, id: string }>, images: Array<{ url: string, alt: string }> }> } | null };
+
 export type ProductGetByIdQueryVariables = Exact<{
   id: Scalars['ID']['input'];
 }>;
@@ -288,7 +321,17 @@ export type ProductGetByIdQueryVariables = Exact<{
 
 export type ProductGetByIdQuery = { product?: { id: string, name: string, description: string, price: number, categories: Array<{ name: string, id: string }>, images: Array<{ url: string, alt: string }> } | null };
 
-export type ProductsGetListQueryVariables = Exact<{ [key: string]: never; }>;
+export type ProductsGetBySearchInputQueryVariables = Exact<{
+  slug?: InputMaybe<Scalars['String']['input']>;
+}>;
+
+
+export type ProductsGetBySearchInputQuery = { products: { data: Array<{ id: string, name: string, price: number, categories: Array<{ name: string, id: string }>, images: Array<{ url: string, alt: string }> }> } };
+
+export type ProductsGetListQueryVariables = Exact<{
+  take?: InputMaybe<Scalars['Int']['input']>;
+  skip?: InputMaybe<Scalars['Int']['input']>;
+}>;
 
 
 export type ProductsGetListQuery = { products: { data: Array<{ id: string, name: string, price: number, images: Array<{ url: string, alt: string }>, categories: Array<{ id: string, name: string }> }> } };
@@ -322,6 +365,43 @@ export const ProductListItemFragmentFragmentDoc = new TypedDocumentString(`
   }
 }
     `, {"fragmentName":"ProductListItemFragment"}) as unknown as TypedDocumentString<ProductListItemFragmentFragment, unknown>;
+export const CategoriesGetListDocument = new TypedDocumentString(`
+    query CategoriesGetList {
+  categories {
+    data {
+      id
+      name
+    }
+  }
+}
+    `) as unknown as TypedDocumentString<CategoriesGetListQuery, CategoriesGetListQueryVariables>;
+export const CategoryGetByNameDocument = new TypedDocumentString(`
+    query CategoryGetByName($slug: String!) {
+  category(slug: $slug) {
+    id
+    name
+    description
+  }
+}
+    `) as unknown as TypedDocumentString<CategoryGetByNameQuery, CategoryGetByNameQueryVariables>;
+export const CollectionGetByNameDocument = new TypedDocumentString(`
+    query CollectionGetByName($slug: String!) {
+  collection(slug: $slug) {
+    id
+    name
+  }
+}
+    `) as unknown as TypedDocumentString<CollectionGetByNameQuery, CollectionGetByNameQueryVariables>;
+export const CollectionsGetListDocument = new TypedDocumentString(`
+    query CollectionsGetList($take: Int) {
+  collections(take: $take) {
+    data {
+      id
+      name
+    }
+  }
+}
+    `) as unknown as TypedDocumentString<CollectionsGetListQuery, CollectionsGetListQueryVariables>;
 export const ProductsGetByCategorySlugDocument = new TypedDocumentString(`
     query ProductsGetByCategorySlug($slug: String!) {
   category(slug: $slug) {
@@ -343,6 +423,25 @@ export const ProductsGetByCategorySlugDocument = new TypedDocumentString(`
     name
   }
 }`) as unknown as TypedDocumentString<ProductsGetByCategorySlugQuery, ProductsGetByCategorySlugQueryVariables>;
+export const ProductsGetByCollectionIdDocument = new TypedDocumentString(`
+    query ProductsGetByCollectionId($collectionId: ID!) {
+  collection(id: $collectionId) {
+    products {
+      id
+      name
+      categories {
+        name
+        id
+      }
+      images {
+        url
+        alt
+      }
+      price
+    }
+  }
+}
+    `) as unknown as TypedDocumentString<ProductsGetByCollectionIdQuery, ProductsGetByCollectionIdQueryVariables>;
 export const ProductGetByIdDocument = new TypedDocumentString(`
     query ProductGetById($id: ID!) {
   product(id: $id) {
@@ -361,9 +460,28 @@ export const ProductGetByIdDocument = new TypedDocumentString(`
   }
 }
     `) as unknown as TypedDocumentString<ProductGetByIdQuery, ProductGetByIdQueryVariables>;
+export const ProductsGetBySearchInputDocument = new TypedDocumentString(`
+    query ProductsGetBySearchInput($slug: String) {
+  products(search: $slug) {
+    data {
+      id
+      name
+      categories {
+        name
+        id
+      }
+      images {
+        url
+        alt
+      }
+      price
+    }
+  }
+}
+    `) as unknown as TypedDocumentString<ProductsGetBySearchInputQuery, ProductsGetBySearchInputQueryVariables>;
 export const ProductsGetListDocument = new TypedDocumentString(`
-    query ProductsGetList {
-  products(take: 10) {
+    query ProductsGetList($take: Int, $skip: Int) {
+  products(take: $take, skip: $skip) {
     data {
       ...ProductListItemFragment
     }

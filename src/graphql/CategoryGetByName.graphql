@@ -1,0 +1,7 @@
+query CategoryGetByName($slug: String!) {
+	category(slug: $slug) {
+		id
+		name
+		description
+	}
+}

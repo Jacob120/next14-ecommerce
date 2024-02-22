@@ -1,0 +1,8 @@
+query CollectionsGetList($take: Int) {
+	collections(take: $take) {
+		data {
+			id
+			name
+		}
+	}
+}

@@ -2,12 +2,9 @@ import React from "react";
 import { formatCurrency } from "@/utils/formatCurrency";
 import { type ProductListItemFragmentFragment } from "@/gql/graphql";
 
-
 type ProductDescriptionProps = {
 	product: ProductListItemFragmentFragment;
 };
-
-
 
 export const ProductDescription = ({
 	product: { name, categories, price },
@@ -15,7 +12,7 @@ export const ProductDescription = ({
 	return (
 		<div className="mt-2 flex justify-between p-4">
 			<div>
-				<h1 className=" font-semibold text-gray-700">{name}</h1>
+				<h2 className=" font-semibold text-gray-700">{name}</h2>
 				<p className=" text-gray-500">
 					<span className="sr-only">Category:</span>
 					{categories[0]?.name || "No category"}

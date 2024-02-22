@@ -1,0 +1,17 @@
+query ProductsGetBySearchInput($slug: String) {
+	products(search: $slug) {
+		data {
+			id
+			name
+			categories {
+				name
+				id
+			}
+			images {
+				url
+				alt
+			}
+			price
+		}
+	}
+}

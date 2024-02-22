@@ -2,6 +2,7 @@ import { type Metadata } from "next/types";
 import { notFound } from "next/navigation";
 import { ProductGetByIdDocument } from "@/gql/graphql";
 import { executeGraphql } from "@/api/graphqlApi";
+import { SuggestedProductsList } from "@/components/organisms/SuggestedProducts";
 
 export const generateMetadata = async ({
 	params,
@@ -46,9 +47,18 @@ export default async function ProductPage({
 
 	return (
 		<div>
+			{" "}
+			<h1 className="flex-auto text-3xl font-bold tracking-tight text-slate-900">
+				{product.name}
+			</h1>
 			<div className="max-w-xs">
-				<h1>{product.name}</h1>
 				<p>{product.description}</p>
+			</div>
+			<div className="mt-5">
+				<h2 className="mx-auto max-w-7xl text-xl font-semibold">
+					Related Products
+				</h2>
+				<SuggestedProductsList />
 			</div>
 		</div>
 	);

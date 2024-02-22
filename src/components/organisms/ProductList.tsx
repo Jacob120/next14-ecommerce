@@ -11,7 +11,7 @@ export const ProductList = ({
 	return (
 		<ul
 			data-testid="products-list"
-			className="grid w-full grid-cols-1 gap-x-6 gap-y-10 p-8 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 xl:gap-x-8"
+			className="mx-auto grid w-full max-w-7xl grid-cols-1 gap-x-6 gap-y-10 p-8 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 xl:gap-x-8"
 		>
 			{products.map((product) => {
 				return <ProductListItem key={product.id} product={product} />;

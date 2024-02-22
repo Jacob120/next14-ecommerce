@@ -5,6 +5,8 @@ import {
 	type ProductListItemFragmentFragment,
 	ProductsGetByCategorySlugDocument,
 	ProductsGetListDocument,
+	ProductsGetByCollectionIdDocument,
+	ProductsGetBySearchInputDocument,
 } from "@/gql/graphql";
 
 export type ProductResponseItem = {
@@ -46,8 +48,14 @@ export const getProductById = async (
 	return product;
 };
 
-export const getProductsByPage = async () => {
-	const products = await executeGraphql(ProductsGetListDocument, {});
+export const getProductsByPage = async (
+	take: number,
+	skip: number,
+) => {
+	const products = await executeGraphql(ProductsGetListDocument, {
+		take,
+		skip,
+	});
 
 	return products.products.data;
 };
@@ -65,4 +73,30 @@ export const getProductsByCategorySlug = async (
 	const products = categories.category?.products;
 
 	return products;
+};
+
+export const getProductsByCollectionId = async (
+	collectionId: string,
+) => {
+	const products = await executeGraphql(
+		ProductsGetByCollectionIdDocument,
+		{
+			collectionId: collectionId,
+		},
+	);
+
+	return products.collection?.products;
+};
+
+export const getProductsBySearchInput = async (
+	searchInput: string,
+) => {
+	const products = await executeGraphql(
+		ProductsGetBySearchInputDocument,
+		{
+			slug: searchInput,
+		},
+	);
+
+	return products.products.data;
 };

@@ -4,24 +4,25 @@ import { ProductList } from "@/components/organisms/ProductList";
 
 export async function generateStaticParams() {
 	const products = await getProductsList();
-	console.log(products);
+
 	const numOfPages = Math.ceil(products.data.length / 20);
 	const pages = Array.from({ length: numOfPages }, (_, i) => i + 1);
 	return pages.map((page) => ({ params: { page: page.toString() } }));
 }
+
 export default async function ProductsPage({
 	// eslint-disable-next-line @typescript-eslint/no-unused-vars
 	params,
 }: {
 	params: { pageNumber: string };
 }) {
-	// const take = 20;
-	// const offset = (Number(params.pageNumber) - 1) * take;
-	const products = await getProductsByPage();
-	console.log("getProductsByPage", products);
+	const take = 10;
+	const skip = (Number(params.pageNumber) - 1) * take;
+	const products = await getProductsByPage(take, skip);
+
 	return (
-		<div>
+		<>
 			<ProductList products={products} />;
-		</div>
+		</>
 	);
 }

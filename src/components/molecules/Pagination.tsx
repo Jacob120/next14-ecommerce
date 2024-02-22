@@ -17,9 +17,9 @@ export const Pagination = ({
 				{pages.map((page) => (
 					<li
 						key={page}
-						className={`mx-1 ${currentPage === page ? "text-red-500" : "text-blue-500"}`}
+						className={`mx-1 ${currentPage == page ? "text-red-500" : "text-blue-500"}`}
 					>
-						<ActiveLink href={`/products/${page}`}>{page}</ActiveLink>
+						<ActiveLink href={`${page}`}>{page}</ActiveLink>
 					</li>
 				))}
 			</ul>
