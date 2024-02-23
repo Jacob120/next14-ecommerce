@@ -9,7 +9,8 @@ export default async function SearchResultPage({
 	};
 }) {
 	const query = searchParams.query || "";
-	const products = await getProductsBySearchInput(query);
+	const products =
+		query.length > 1 ? await getProductsBySearchInput(query) : [];
 
 	return (
 		<section className="mx-auto min-h-screen max-w-7xl">
