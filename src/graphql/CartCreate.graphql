@@ -1,0 +1,14 @@
+mutation CartCreate(
+	$cartId: ID!
+	$slug: MutationCartFindOrCreateInput!
+) {
+	cartFindOrCreate(input: $slug, id: $cartId) {
+		id
+		items {
+			product {
+				name
+			}
+			quantity
+		}
+	}
+}

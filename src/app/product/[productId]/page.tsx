@@ -1,8 +1,18 @@
 import { type Metadata } from "next/types";
 import { notFound } from "next/navigation";
-import { ProductGetByIdDocument } from "@/gql/graphql";
+import { cookies } from "next/headers";
+import {
+	type MutationCartAddItemInput,
+	ProductGetByIdDocument,
+} from "@/gql/graphql";
 import { executeGraphql } from "@/api/graphqlApi";
 import { SuggestedProductsList } from "@/components/organisms/SuggestedProducts";
+import {
+	addProductToCart,
+	createCart,
+	getCartById,
+} from "@/api/cart";
+import { ButtonWideRectangle } from "@/components/atoms/ButtonWideRectangle";
 
 export const generateMetadata = async ({
 	params,
@@ -45,6 +55,48 @@ export default async function ProductPage({
 		notFound();
 	}
 
+	async function getOrCreateCart() {
+		"use server";
+		const cartId = cookies().get("cartId")?.value;
+
+		if (cartId) {
+			const cart = await getCartById(cartId);
+			if (cart) {
+				return cart;
+			}
+		}
+
+		const cart = await createCart(cartId || "", {});
+
+		if (!cart) {
+			throw new Error("Cart not found or created");
+		}
+
+		return cart;
+	}
+
+	async function addToCartAction(form: FormData) {
+		"use server";
+		const cart = await getOrCreateCart();
+
+		if (cart) {
+			cookies().set("cartId", cart.id, {
+				httpOnly: true,
+				sameSite: "strict",
+				// secure: true,
+			});
+		}
+
+		const newForm: MutationCartAddItemInput = {
+			item: {
+				productId: form.get("productId") as string,
+				quantity: parseInt(form.get("quantity") as string),
+			},
+		};
+
+		await addProductToCart(cart.id, newForm);
+	}
+
 	return (
 		<div>
 			{" "}
@@ -53,6 +105,17 @@ export default async function ProductPage({
 			</h1>
 			<div className="max-w-xs">
 				<p>{product.description}</p>
+				<form action={addToCartAction}>
+					<input type="hidden" name="productId" value={product.id} />
+					<input
+						type="number"
+						name="quantity"
+						min="1"
+						max="10"
+						defaultValue="1"
+					/>
+					<ButtonWideRectangle actionName="Add to Cart" />
+				</form>
 			</div>
 			<div className="mt-5">
 				<h2 className="mx-auto max-w-7xl text-xl font-semibold">
