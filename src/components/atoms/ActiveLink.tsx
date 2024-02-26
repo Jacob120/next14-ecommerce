@@ -37,10 +37,14 @@ export const ActiveLink = ({
 		<Link
 			href={urlObject}
 			aria-current={isActive ? "page" : undefined}
-			className={clsx("mx-2", "border-b-2", {
-				"border-transparent": !isActive,
-				"border-blue-500": isActive,
-			})}
+			className={clsx(
+				"mx-2",
+				"flex h-full w-full  items-center justify-center border-b-2 px-1 py-2 text-center text-sm font-medium text-slate-500 transition duration-150 ease-in-out hover:border-slate-300 hover:text-slate-900  focus:text-slate-900 focus:outline-none",
+				{
+					"border-transparent": !isActive,
+					"border-blue-500": isActive,
+				},
+			)}
 		>
 			{children}
 		</Link>

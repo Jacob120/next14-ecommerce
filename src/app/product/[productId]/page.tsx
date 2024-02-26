@@ -1,6 +1,7 @@
 import { type Metadata } from "next/types";
 import { notFound } from "next/navigation";
 import { cookies } from "next/headers";
+import Image from "next/image";
 import {
 	type MutationCartAddItemInput,
 	ProductGetByIdDocument,
@@ -13,6 +14,7 @@ import {
 	getCartById,
 } from "@/api/cart";
 import { ButtonWideRectangle } from "@/components/atoms/ButtonWideRectangle";
+import { formatCurrency } from "@/utils/formatCurrency";
 
 export const generateMetadata = async ({
 	params,
@@ -79,12 +81,8 @@ export default async function ProductPage({
 		"use server";
 		const cart = await getOrCreateCart();
 
-		if (cart) {
-			cookies().set("cartId", cart.id, {
-				httpOnly: true,
-				sameSite: "strict",
-				// secure: true,
-			});
+		if (!cart) {
+			throw new Error("Cart not found or created");
 		}
 
 		const newForm: MutationCartAddItemInput = {
@@ -98,25 +96,52 @@ export default async function ProductPage({
 	}
 
 	return (
-		<div>
-			{" "}
-			<h1 className="flex-auto text-3xl font-bold tracking-tight text-slate-900">
-				{product.name}
-			</h1>
-			<div className="max-w-xs">
-				<p>{product.description}</p>
-				<form action={addToCartAction}>
-					<input type="hidden" name="productId" value={product.id} />
-					<input
-						type="number"
-						name="quantity"
-						min="1"
-						max="10"
-						defaultValue="1"
-					/>
-					<ButtonWideRectangle actionName="Add to Cart" />
-				</form>
-			</div>
+		<div className="flex flex-grow flex-col">
+			<section className="mx-auto grid max-w-7xl p-8">
+				<article>
+					<form
+						action={addToCartAction}
+						className="grid grid-cols-1 gap-4 sm:grid-cols-2"
+					>
+						<div className="overflow-hidden rounded-md border bg-slate-50 hover:bg-slate-100">
+							{product.images[0]?.url && (
+								<Image
+									priority
+									src={product.images[0].url}
+									alt={product.name}
+									className="h-full w-full object-cover object-center p-4 transition-transform hover:scale-105"
+									width={420}
+									height={420}
+								/>
+							)}
+							<input
+								type="hidden"
+								name="productId"
+								value={product.id}
+							/>
+						</div>
+						<div className="px-6">
+							<h1 className="flex-auto text-3xl font-bold tracking-tight text-slate-900">
+								{product.name}
+							</h1>
+							<div className="mt-4 flex items-center">
+								<p className="font-base small-caps text-lg text-slate-800">
+									{formatCurrency(product.price)}
+								</p>
+							</div>
+							<div className="mt-4 space-y-6">
+								<p className="font-sans text-lg text-slate-500">
+									{product.description}
+								</p>
+							</div>
+							<div className="mt-8">
+								<ButtonWideRectangle actionName="Add to Cart" />
+							</div>
+						</div>
+					</form>
+				</article>
+			</section>
+
 			<div className="mt-5">
 				<h2 className="mx-auto max-w-7xl text-xl font-semibold">
 					Related Products

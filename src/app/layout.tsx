@@ -19,8 +19,8 @@ export default function RootLayout({
 		<html lang="en">
 			<body className={inter.className}>
 				<NavBar />
-				<section className=" mx-auto   sm:py-4">{children}</section>
-				<footer className="container mx-auto flex w-full sm:py-4">
+				<section className=" mx-auto">{children}</section>
+				<footer className=" mx-auto flex w-full bg-gray-100 sm:py-4">
 					<p className="mx-auto">
 						© {new Date().getFullYear()} Next.js, Inc.
 					</p>

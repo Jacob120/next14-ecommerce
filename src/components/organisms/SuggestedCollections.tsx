@@ -7,7 +7,7 @@ export const SuggestedCollections = async () => {
 	const take = 3;
 	const collections = await getCollectionsList(take);
 	return (
-		<section className="bg-white">
+		<section className="bg-gray-100">
 			<div className="pt-16 sm:pt-24 lg:mx-auto lg:max-w-7xl lg:px-8 lg:pt-32">
 				<div className="flex items-center justify-between px-4 sm:px-6 lg:px-0"></div>
 

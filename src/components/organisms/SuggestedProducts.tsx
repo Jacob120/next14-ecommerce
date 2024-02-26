@@ -15,8 +15,8 @@ export const SuggestedProductsList = async () => {
 	const selectedProducts = shuffledProducts.slice(0, 4);
 
 	return (
-		<div data-testid="related-products">
+		<aside data-testid="related-products">
 			<ProductList products={selectedProducts} />
-		</div>
+		</aside>
 	);
 };

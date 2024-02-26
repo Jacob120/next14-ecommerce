@@ -11,6 +11,7 @@ export const ProductImage = ({
 	return (
 		<div className="aspect-square w-full overflow-hidden rounded-md ">
 			<Image
+				priority
 				src={src}
 				alt={alt}
 				width={420}

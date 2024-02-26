@@ -1,3 +1,4 @@
+import { cookies } from "next/headers";
 import { executeGraphql } from "@/api/graphqlApi";
 import {
 	CartAddProductDocument,
@@ -22,6 +23,12 @@ export const createCart = async (
 	const cart = await executeGraphql(CartCreateDocument, {
 		slug: slug,
 		cartId: cartId as string,
+	});
+
+	cookies().set("cartId", cart.cartFindOrCreate.id, {
+		httpOnly: true,
+		sameSite: "strict",
+		// secure: true,
 	});
 
 	return cart.cartFindOrCreate;

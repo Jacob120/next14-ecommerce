@@ -2,6 +2,7 @@ import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 import { getCartById } from "@/api/cart";
 import { formatCurrency } from "@/utils/formatCurrency";
+import { ChangeQuantity } from "@/components/molecules/ChangeQuantity";
 
 export default async function CartPage() {
 	const cartId = cookies().get("cartId")?.value;
@@ -35,7 +36,14 @@ export default async function CartPage() {
 						return (
 							<tr key={item.product.id}>
 								<td>{item.product.name}</td>
-								<td>{item.quantity}</td>
+								<td>
+									{item.quantity}
+									<ChangeQuantity
+										cartId={cart.id}
+										itemId={item.product.id}
+										quantity={item.quantity}
+									/>
+								</td>
 								<td>{formatCurrency(item.product?.price)}</td>
 							</tr>
 						);
