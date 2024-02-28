@@ -1,7 +1,7 @@
 import { ShoppingBag } from "lucide-react";
 import Link from "next/link";
 
-export const CartCounter = () => {
+export const CartCounter = ({ quantity }: { quantity: number }) => {
 	return (
 		<div className="ml-auto h-full lg:ml-4">
 			<Link
@@ -10,7 +10,9 @@ export const CartCounter = () => {
 			>
 				<ShoppingBag />
 				<div className="w-4">
-					<span className="ml-2 text-sm font-medium ">0</span>
+					<span className="ml-2 text-sm font-medium ">
+						{quantity || 0}{" "}
+					</span>
 					<span className="sr-only">items in cart, view bag</span>
 				</div>
 			</Link>

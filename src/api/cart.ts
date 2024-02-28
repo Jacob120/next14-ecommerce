@@ -1,5 +1,3 @@
-import { cookies } from "next/headers";
-import { executeGraphql } from "@/api/graphqlApi";
 import {
 	CartAddProductDocument,
 	CartCreateDocument,
@@ -7,11 +5,16 @@ import {
 	type MutationCartAddItemInput,
 	type MutationCartFindOrCreateInput,
 } from "@/gql/graphql";
+import { executeGraphql } from "@/api/graphqlApi";
 
 export const getCartById = async (cartId: string) => {
-	const cart = await executeGraphql(CartGetByIdDocument, {
-		slug: cartId,
-	} as { slug: string });
+	const cart = await executeGraphql({
+		query: CartGetByIdDocument,
+		variables: {
+			slug: cartId,
+		},
+		cache: "no-store",
+	});
 
 	return cart.cart;
 };
@@ -20,15 +23,13 @@ export const createCart = async (
 	cartId: string | undefined,
 	slug: MutationCartFindOrCreateInput,
 ) => {
-	const cart = await executeGraphql(CartCreateDocument, {
-		slug: slug,
-		cartId: cartId as string,
-	});
-
-	cookies().set("cartId", cart.cartFindOrCreate.id, {
-		httpOnly: true,
-		sameSite: "strict",
-		// secure: true,
+	const cart = await executeGraphql({
+		query: CartCreateDocument,
+		variables: {
+			slug: slug,
+			cartId: cartId as string,
+		},
+		cache: "no-store",
 	});
 
 	return cart.cartFindOrCreate;
@@ -38,16 +39,23 @@ export const addProductToCart = async (
 	cartId: string,
 	input: MutationCartAddItemInput,
 ) => {
-	const cart = await executeGraphql(CartGetByIdDocument, {
-		slug: cartId,
+	const cart = await executeGraphql({
+		query: CartGetByIdDocument,
+		variables: {
+			slug: cartId,
+		},
+		cache: "no-store",
 	});
 
 	if (!cart) {
 		return;
 	}
 
-	await executeGraphql(CartAddProductDocument, {
-		cartId: cartId,
-		input: input,
+	await executeGraphql({
+		query: CartAddProductDocument,
+		variables: {
+			cartId: cartId,
+			input: input,
+		},
 	});
 };

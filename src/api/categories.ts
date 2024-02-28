@@ -5,18 +5,20 @@ import {
 } from "@/gql/graphql";
 
 export const getCategoriesList = async () => {
-	const categories = await executeGraphql(
-		CategoriesGetListDocument,
-		{},
-	);
+	const categories = await executeGraphql({
+		query: CategoriesGetListDocument,
+	});
 
 	return categories.categories.data;
 };
 
 export const getCategoryByName = async (name: string) => {
-	const category = await executeGraphql(CategoryGetByNameDocument, {
-		slug: name,
-	} as { slug: string });
+	const category = await executeGraphql({
+		query: CategoryGetByNameDocument,
+		variables: {
+			slug: name,
+		},
+	});
 
 	return category?.category;
 };

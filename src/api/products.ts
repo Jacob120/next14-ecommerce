@@ -27,22 +27,29 @@ export type ProductResponseItem = {
 };
 
 export const getProductsList = async () => {
-	const graphqlResponse = await executeGraphql(
-		ProductsGetListDocument,
-		{},
-	);
+	const graphqlResponse = await executeGraphql({
+		query: ProductsGetListDocument,
+		variables: {},
+		next: {
+			revalidate: 60,
+		},
+	});
+
 	return graphqlResponse.products;
 };
 
 export const getProductById = async (
 	productId: ProductListItemFragmentFragment["id"],
 ) => {
-	const product = await executeGraphql(ProductGetByIdDocument, {
-		id: productId,
+	const product = await executeGraphql({
+		query: ProductGetByIdDocument,
+		variables: {
+			id: productId,
+		},
 	});
 
 	if (!product.product) {
-		return null;
+		return;
 	}
 
 	return product;
@@ -52,9 +59,12 @@ export const getProductsByPage = async (
 	take: number,
 	skip: number,
 ) => {
-	const products = await executeGraphql(ProductsGetListDocument, {
-		take,
-		skip,
+	const products = await executeGraphql({
+		query: ProductsGetListDocument,
+		variables: {
+			take,
+			skip,
+		},
 	});
 
 	return products.products.data;
@@ -63,12 +73,12 @@ export const getProductsByPage = async (
 export const getProductsByCategorySlug = async (
 	categorySlug: string,
 ) => {
-	const categories = await executeGraphql(
-		ProductsGetByCategorySlugDocument,
-		{
+	const categories = await executeGraphql({
+		query: ProductsGetByCategorySlugDocument,
+		variables: {
 			slug: categorySlug,
 		},
-	);
+	});
 
 	const products = categories.category?.products;
 
@@ -78,12 +88,12 @@ export const getProductsByCategorySlug = async (
 export const getProductsByCollectionId = async (
 	collectionId: string,
 ) => {
-	const products = await executeGraphql(
-		ProductsGetByCollectionIdDocument,
-		{
+	const products = await executeGraphql({
+		query: ProductsGetByCollectionIdDocument,
+		variables: {
 			collectionId: collectionId,
 		},
-	);
+	});
 
 	return products.collection?.products;
 };
@@ -91,12 +101,12 @@ export const getProductsByCollectionId = async (
 export const getProductsBySearchInput = async (
 	searchInput: string,
 ) => {
-	const products = await executeGraphql(
-		ProductsGetBySearchInputDocument,
-		{
+	const products = await executeGraphql({
+		query: ProductsGetBySearchInputDocument,
+		variables: {
 			slug: searchInput,
 		},
-	);
+	});
 
 	return products.products.data;
 };
