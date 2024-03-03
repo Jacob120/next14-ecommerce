@@ -1,3 +1,4 @@
+import { cookies } from "next/headers";
 import {
 	CartAddProductDocument,
 	CartCreateDocument,
@@ -7,7 +8,13 @@ import {
 } from "@/gql/graphql";
 import { executeGraphql } from "@/api/graphqlApi";
 
-export const getCartById = async (cartId: string) => {
+export const getCartById = async () => {
+	const cartId = cookies().get("cartId")?.value;
+
+	if (!cartId) {
+		return;
+	}
+
 	const cart = await executeGraphql({
 		query: CartGetByIdDocument,
 		variables: {

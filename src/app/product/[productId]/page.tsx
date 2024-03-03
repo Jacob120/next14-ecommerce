@@ -13,7 +13,8 @@ import {
 } from "@/api/cart";
 import { ButtonWideRectangle } from "@/components/atoms/ButtonWideRectangle";
 import { formatCurrency } from "@/utils/formatCurrency";
-import { getProductById } from "@/api/products";
+import { getProductById, productAddReview } from "@/api/products";
+import { ReviewForm } from "@/components/molecules/ReviewForm";
 
 export const generateMetadata = async ({
 	params,
@@ -57,7 +58,7 @@ export default async function ProductPage({
 		const cartId = cookies().get("cartId")?.value;
 
 		if (cartId) {
-			const cart = await getCartById(cartId);
+			const cart = await getCartById();
 			if (cart) {
 				return cart;
 			}
@@ -98,8 +99,31 @@ export default async function ProductPage({
 		revalidateTag("cart");
 	}
 
+	async function addReviewAction(form: FormData) {
+		"use server";
+		console.log("Review added formData", form);
+
+		const data = {
+			productId: product?.product?.id,
+			author: form.get("author"),
+			description: form.get("description"),
+			email: form.get("email"),
+			rating: form.get("rating"),
+			title: form.get("title"),
+		};
+		console.log("data", data);
+		await productAddReview(
+			data.productId as string,
+			data.author as string,
+			data.description as string,
+			data.email as string,
+			Number(data.rating) as unknown as number,
+			data.title as string,
+		);
+	}
+
 	return (
-		<div className="flex flex-grow flex-col">
+		<div className="mx-auto flex max-w-7xl flex-grow flex-col">
 			<section className="mx-auto grid max-w-7xl p-8">
 				{product && product.product && (
 					<article>
@@ -139,7 +163,10 @@ export default async function ProductPage({
 									</p>
 								</div>
 								<div className="mt-8">
-									<ButtonWideRectangle actionName="Add to Cart" />
+									<ButtonWideRectangle
+										actionName="Add to Cart"
+										data-testid="add-to-cart-button"
+									/>
 								</div>
 							</div>
 						</form>
@@ -152,6 +179,39 @@ export default async function ProductPage({
 					Related Products
 				</h2>
 				<SuggestedProductsList />
+			</div>
+
+			{/* Reviews */}
+			<div className="mmx-auto max-w-2xl lg:grid lg:max-w-7xl lg:grid-cols-12 lg:gap-x-8 lg:py-16">
+				{/* Left column*/}
+				<div className="lg:col-span-4">
+					<h2 className=" text-2xl font-bold tracking-tight text-gray-900">
+						Customer Reviews
+					</h2>
+					<div className="mt-3 flex items-center">
+						<div className="flex items-center">Stars</div>
+					</div>
+					<div className="mt-10">
+						<h3 className="text-lg font-medium text-gray-900">
+							Share your thoughts
+						</h3>
+						<p className="mt-1 text-sm font-medium text-gray-900 ">
+							If you’ve used this product, share your thoughts with
+							other customers
+						</p>
+						<div className="mt-2">
+							<ReviewForm
+								addReviewAction={addReviewAction}
+								productId={product.product?.id || ""}
+							/>
+						</div>
+					</div>
+				</div>
+
+				{/* Right column */}
+				<div className="mt-16 lg:col-span-7 lg:col-start-6 lg:mt-0">
+					Reviews
+				</div>
 			</div>
 		</div>
 	);

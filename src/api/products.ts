@@ -7,6 +7,7 @@ import {
 	ProductsGetListDocument,
 	ProductsGetByCollectionIdDocument,
 	ProductsGetBySearchInputDocument,
+	ProductAddReviewDocument,
 } from "@/gql/graphql";
 
 export type ProductResponseItem = {
@@ -109,4 +110,27 @@ export const getProductsBySearchInput = async (
 	});
 
 	return products.products.data;
+};
+
+export const productAddReview = async (
+	productId: string,
+	author: string,
+	description: string,
+	email: string,
+	rating: number,
+	title: string,
+) => {
+	const review = await executeGraphql({
+		query: ProductAddReviewDocument,
+		variables: {
+			productId,
+			author,
+			description,
+			email,
+			rating,
+			title,
+		},
+	});
+
+	return review;
 };

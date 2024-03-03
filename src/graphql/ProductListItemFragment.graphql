@@ -10,4 +10,5 @@ fragment ProductListItemFragment on Product {
 		id
 		name
 	}
+	rating
 }
