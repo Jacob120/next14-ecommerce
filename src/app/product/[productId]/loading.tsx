@@ -1,3 +1,3 @@
 export default function Loading() {
-	return <div>Loading</div>;
+	return <div aria-busy="true">Loading</div>;
 }

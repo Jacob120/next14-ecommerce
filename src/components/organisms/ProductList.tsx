@@ -1,4 +1,3 @@
-// components/organisms/ProductList.tsx
 import { ProductListItem } from "@/components/molecules/ProductListItem";
 
 import { type ProductListItemFragmentFragment } from "@/gql/graphql";

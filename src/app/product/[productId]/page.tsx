@@ -13,8 +13,10 @@ import {
 } from "@/api/cart";
 import { ButtonWideRectangle } from "@/components/atoms/ButtonWideRectangle";
 import { formatCurrency } from "@/utils/formatCurrency";
-import { getProductById, productAddReview } from "@/api/products";
-import { ReviewForm } from "@/components/molecules/ReviewForm";
+import { getProductById } from "@/api/products";
+import { ProductReviewsSection } from "@/components/organisms/ProductReviewsSection";
+import { type Review } from "@/types";
+import { cartChangeItemQuantity } from "@/app/cart/actions";
 
 export const generateMetadata = async ({
 	params,
@@ -87,39 +89,35 @@ export default async function ProductPage({
 			throw new Error("Cart not found or created");
 		}
 
-		const newForm: MutationCartAddItemInput = {
-			item: {
-				productId: form.get("productId") as string,
-				quantity: parseInt(form.get("quantity") as string),
-			},
-		};
+		const productId = form.get("productId") as string;
+		const existingItem = cart.items.find(
+			(item) => item.product.id === productId,
+		);
 
-		await addProductToCart(cart.id, newForm);
+		if (existingItem) {
+			const updatedQuantity: number = existingItem.quantity
+				? existingItem.quantity + 1
+				: 1;
+
+			await cartChangeItemQuantity(
+				cart.id,
+				productId,
+				updatedQuantity,
+			);
+
+			revalidateTag("cart");
+			return;
+		} else {
+			const newForm: MutationCartAddItemInput = {
+				item: {
+					productId: form.get("productId") as string,
+					quantity: 1,
+				},
+			};
+			await addProductToCart(cart.id, newForm);
+		}
 
 		revalidateTag("cart");
-	}
-
-	async function addReviewAction(form: FormData) {
-		"use server";
-		console.log("Review added formData", form);
-
-		const data = {
-			productId: product?.product?.id,
-			author: form.get("author"),
-			description: form.get("description"),
-			email: form.get("email"),
-			rating: form.get("rating"),
-			title: form.get("title"),
-		};
-		console.log("data", data);
-		await productAddReview(
-			data.productId as string,
-			data.author as string,
-			data.description as string,
-			data.email as string,
-			Number(data.rating) as unknown as number,
-			data.title as string,
-		);
 	}
 
 	return (
@@ -165,7 +163,7 @@ export default async function ProductPage({
 								<div className="mt-8">
 									<ButtonWideRectangle
 										actionName="Add to Cart"
-										data-testid="add-to-cart-button"
+										testid="add-to-cart-button"
 									/>
 								</div>
 							</div>
@@ -181,37 +179,11 @@ export default async function ProductPage({
 				<SuggestedProductsList />
 			</div>
 
-			{/* Reviews */}
-			<div className="mmx-auto max-w-2xl lg:grid lg:max-w-7xl lg:grid-cols-12 lg:gap-x-8 lg:py-16">
-				{/* Left column*/}
-				<div className="lg:col-span-4">
-					<h2 className=" text-2xl font-bold tracking-tight text-gray-900">
-						Customer Reviews
-					</h2>
-					<div className="mt-3 flex items-center">
-						<div className="flex items-center">Stars</div>
-					</div>
-					<div className="mt-10">
-						<h3 className="text-lg font-medium text-gray-900">
-							Share your thoughts
-						</h3>
-						<p className="mt-1 text-sm font-medium text-gray-900 ">
-							If you’ve used this product, share your thoughts with
-							other customers
-						</p>
-						<div className="mt-2">
-							<ReviewForm
-								addReviewAction={addReviewAction}
-								productId={product.product?.id || ""}
-							/>
-						</div>
-					</div>
-				</div>
-
-				{/* Right column */}
-				<div className="mt-16 lg:col-span-7 lg:col-start-6 lg:mt-0">
-					Reviews
-				</div>
+			<div>
+				<ProductReviewsSection
+					productId={product?.product?.id || ""}
+					reviews={product.product?.reviews as unknown as Review[]}
+				/>
 			</div>
 		</div>
 	);

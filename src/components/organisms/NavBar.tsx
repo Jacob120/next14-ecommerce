@@ -1,5 +1,5 @@
 import React from "react";
-import { cookies } from "next/headers";
+
 import { ActiveLink } from "@/components/atoms/ActiveLink";
 import { getCategoriesList } from "@/api/categories";
 import { SearchInput } from "@/components/molecules/SearchInput";
@@ -8,9 +8,8 @@ import { getCartById } from "@/api/cart";
 
 export const NavBar = async () => {
 	const categories = await getCategoriesList();
-	const cartId = cookies().get("cartId")?.value || "";
 
-	const cart = await getCartById(cartId);
+	const cart = await getCartById();
 
 	const cartItemsQuantity = cart?.items.reduce((acc, item) => {
 		acc += item.quantity;

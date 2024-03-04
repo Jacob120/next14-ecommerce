@@ -4,7 +4,6 @@ mutation CartAddProduct(
 ) {
 	cartAddItem(input: $input, id: $cartId) {
 		items {
-			quantity
 			product {
 				name
 				id

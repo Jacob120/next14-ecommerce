@@ -1,5 +1,15 @@
-query ProductsGetList($take: Int, $skip: Int) {
-	products(take: $take, skip: $skip) {
+query ProductsGetList(
+	$orderBy: ProductSortBy
+	$take: Int
+	$skip: Int
+	$order: SortDirection
+) {
+	products(
+		orderBy: $orderBy
+		order: $order
+		take: $take
+		skip: $skip
+	) {
 		data {
 			...ProductListItemFragment
 		}

@@ -279,7 +279,7 @@ export type CartAddProductMutationVariables = Exact<{
 }>;
 
 
-export type CartAddProductMutation = { cartAddItem: { items: Array<{ quantity: number, product: { name: string, id: string, price: number } }> } };
+export type CartAddProductMutation = { cartAddItem: { items: Array<{ product: { name: string, id: string, price: number } }> } };
 
 export type CartCreateMutationVariables = Exact<{
   cartId: Scalars['ID']['input'];
@@ -287,7 +287,7 @@ export type CartCreateMutationVariables = Exact<{
 }>;
 
 
-export type CartCreateMutation = { cartFindOrCreate: { id: string, items: Array<{ quantity: number, product: { name: string } }> } };
+export type CartCreateMutation = { cartFindOrCreate: { id: string, items: Array<{ quantity: number, product: { name: string, id: string } }> } };
 
 export type CartGetByIdQueryVariables = Exact<{
   slug: Scalars['ID']['input'];
@@ -372,7 +372,7 @@ export type ProductGetByIdQueryVariables = Exact<{
 }>;
 
 
-export type ProductGetByIdQuery = { product?: { id: string, name: string, description: string, price: number, rating?: number | null, categories: Array<{ name: string, id: string }>, images: Array<{ url: string, alt: string }> } | null };
+export type ProductGetByIdQuery = { product?: { id: string, name: string, description: string, price: number, rating?: number | null, categories: Array<{ name: string, id: string }>, images: Array<{ url: string, alt: string }>, reviews: Array<{ author: string, description: string, email: string, id: string, rating: number, createdAt: unknown, updatedAt: unknown }> } | null };
 
 export type ProductsGetBySearchInputQueryVariables = Exact<{
   slug?: InputMaybe<Scalars['String']['input']>;
@@ -382,8 +382,10 @@ export type ProductsGetBySearchInputQueryVariables = Exact<{
 export type ProductsGetBySearchInputQuery = { products: { data: Array<{ id: string, name: string, price: number, categories: Array<{ name: string, id: string }>, images: Array<{ url: string, alt: string }> }> } };
 
 export type ProductsGetListQueryVariables = Exact<{
+  orderBy?: InputMaybe<ProductSortBy>;
   take?: InputMaybe<Scalars['Int']['input']>;
   skip?: InputMaybe<Scalars['Int']['input']>;
+  order?: InputMaybe<SortDirection>;
 }>;
 
 
@@ -423,7 +425,6 @@ export const CartAddProductDocument = new TypedDocumentString(`
     mutation CartAddProduct($cartId: ID!, $input: MutationCartAddItemInput!) {
   cartAddItem(input: $input, id: $cartId) {
     items {
-      quantity
       product {
         name
         id
@@ -440,6 +441,7 @@ export const CartCreateDocument = new TypedDocumentString(`
     items {
       product {
         name
+        id
       }
       quantity
     }
@@ -602,6 +604,15 @@ export const ProductGetByIdDocument = new TypedDocumentString(`
     }
     price
     rating
+    reviews {
+      author
+      description
+      email
+      id
+      rating
+      createdAt
+      updatedAt
+    }
   }
 }
     `) as unknown as TypedDocumentString<ProductGetByIdQuery, ProductGetByIdQueryVariables>;
@@ -625,8 +636,8 @@ export const ProductsGetBySearchInputDocument = new TypedDocumentString(`
 }
     `) as unknown as TypedDocumentString<ProductsGetBySearchInputQuery, ProductsGetBySearchInputQueryVariables>;
 export const ProductsGetListDocument = new TypedDocumentString(`
-    query ProductsGetList($take: Int, $skip: Int) {
-  products(take: $take, skip: $skip) {
+    query ProductsGetList($orderBy: ProductSortBy, $take: Int, $skip: Int, $order: SortDirection) {
+  products(orderBy: $orderBy, order: $order, take: $take, skip: $skip) {
     data {
       ...ProductListItemFragment
     }

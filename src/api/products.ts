@@ -8,6 +8,8 @@ import {
 	ProductsGetByCollectionIdDocument,
 	ProductsGetBySearchInputDocument,
 	ProductAddReviewDocument,
+	type ProductSortBy,
+	type SortDirection,
 } from "@/gql/graphql";
 
 export type ProductResponseItem = {
@@ -27,10 +29,16 @@ export type ProductResponseItem = {
 	longDescription: string;
 };
 
-export const getProductsList = async () => {
+export const getProductsList = async (
+	orderBy: ProductSortBy,
+	order: SortDirection,
+) => {
 	const graphqlResponse = await executeGraphql({
 		query: ProductsGetListDocument,
-		variables: {},
+		variables: {
+			orderBy: orderBy,
+			order: order,
+		},
 		next: {
 			revalidate: 60,
 		},
@@ -59,12 +67,16 @@ export const getProductById = async (
 export const getProductsByPage = async (
 	take: number,
 	skip: number,
+	orderBy: ProductSortBy,
+	order: SortDirection,
 ) => {
 	const products = await executeGraphql({
 		query: ProductsGetListDocument,
 		variables: {
 			take,
 			skip,
+			orderBy,
+			order,
 		},
 	});
 
