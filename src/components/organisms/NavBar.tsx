@@ -1,5 +1,12 @@
 import React from "react";
 
+import {
+	SignInButton,
+	SignedIn,
+	SignedOut,
+	UserButton,
+} from "@clerk/nextjs";
+
 import { ActiveLink } from "@/components/atoms/ActiveLink";
 import { getCategoriesList } from "@/api/categories";
 import { SearchInput } from "@/components/molecules/SearchInput";
@@ -40,11 +47,19 @@ export const NavBar = async () => {
 								);
 							})}
 						</ul>
+						<div className="flex h-full flex-1 items-center px-2 lg:ml-6 lg:h-16 lg:justify-end">
+							<SearchInput />
+							<CartCounter quantity={cartItemsQuantity || 0} />
+							<div className="text-slate-500">
+								<SignedIn>
+									<UserButton />
+								</SignedIn>
+								<SignedOut>
+									<SignInButton />
+								</SignedOut>
+							</div>
+						</div>
 					</nav>
-					<div className="flex h-full flex-1 items-center px-2 lg:ml-6 lg:h-16 lg:justify-end">
-						<SearchInput />
-						<CartCounter quantity={cartItemsQuantity || 0} />
-					</div>
 				</div>
 			</div>
 		</header>

@@ -4,7 +4,10 @@ import { getProductsList } from "@/api/products";
 import { type ProductListItemFragmentFragment } from "@/gql/graphql";
 
 export const SuggestedProductsList = async () => {
-	const products = await getProductsList();
+	const orderBy = "DEFAULT";
+	const orderDirection = "ASC";
+
+	const products = await getProductsList(orderBy, orderDirection);
 
 	// Shuffle the array of products
 	const shuffledProducts = (

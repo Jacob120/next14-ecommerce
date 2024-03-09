@@ -23,6 +23,7 @@ const documents = {
     "query CategoryGetByName($slug: String!) {\n  category(slug: $slug) {\n    id\n    name\n    description\n  }\n}": types.CategoryGetByNameDocument,
     "query CollectionGetByName($slug: String!) {\n  collection(slug: $slug) {\n    id\n    name\n  }\n}": types.CollectionGetByNameDocument,
     "query CollectionsGetList($take: Int) {\n  collections(take: $take) {\n    data {\n      id\n      name\n    }\n  }\n}": types.CollectionsGetListDocument,
+    "query OrdersGetByEmail($email: String!) {\n  orders(email: $email) {\n    data {\n      id\n      lines\n      status\n      totalAmount\n    }\n    meta {\n      count\n      total\n    }\n  }\n}": types.OrdersGetByEmailDocument,
     "mutation ProductAddReview($productId: ID!, $author: String!, $description: String!, $email: String!, $rating: Int!, $title: String!) {\n  reviewCreate(\n    productId: $productId\n    author: $author\n    description: $description\n    email: $email\n    rating: $rating\n    title: $title\n  ) {\n    id\n    items {\n      product {\n        id\n      }\n    }\n  }\n}": types.ProductAddReviewDocument,
     "fragment ProductListItemFragment on Product {\n  id\n  name\n  price\n  images {\n    url\n    alt\n  }\n  categories {\n    id\n    name\n  }\n  rating\n}": types.ProductListItemFragmentFragmentDoc,
     "query ProductsGetByCategorySlug($slug: String!) {\n  category(slug: $slug) {\n    products {\n      ...ProductListItemFragment\n    }\n  }\n}": types.ProductsGetByCategorySlugDocument,
@@ -68,6 +69,10 @@ export function graphql(source: "query CollectionGetByName($slug: String!) {\n  
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
 export function graphql(source: "query CollectionsGetList($take: Int) {\n  collections(take: $take) {\n    data {\n      id\n      name\n    }\n  }\n}"): typeof import('./graphql').CollectionsGetListDocument;
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(source: "query OrdersGetByEmail($email: String!) {\n  orders(email: $email) {\n    data {\n      id\n      lines\n      status\n      totalAmount\n    }\n    meta {\n      count\n      total\n    }\n  }\n}"): typeof import('./graphql').OrdersGetByEmailDocument;
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */

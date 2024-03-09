@@ -339,6 +339,13 @@ export type CollectionsGetListQueryVariables = Exact<{
 
 export type CollectionsGetListQuery = { collections: { data: Array<{ id: string, name: string }> } };
 
+export type OrdersGetByEmailQueryVariables = Exact<{
+  email: Scalars['String']['input'];
+}>;
+
+
+export type OrdersGetByEmailQuery = { orders: { data: Array<{ id: string, lines: unknown, status: OrderStatus, totalAmount: number }>, meta: { count: number, total: number } } };
+
 export type ProductAddReviewMutationVariables = Exact<{
   productId: Scalars['ID']['input'];
   author: Scalars['String']['input'];
@@ -528,6 +535,22 @@ export const CollectionsGetListDocument = new TypedDocumentString(`
   }
 }
     `) as unknown as TypedDocumentString<CollectionsGetListQuery, CollectionsGetListQueryVariables>;
+export const OrdersGetByEmailDocument = new TypedDocumentString(`
+    query OrdersGetByEmail($email: String!) {
+  orders(email: $email) {
+    data {
+      id
+      lines
+      status
+      totalAmount
+    }
+    meta {
+      count
+      total
+    }
+  }
+}
+    `) as unknown as TypedDocumentString<OrdersGetByEmailQuery, OrdersGetByEmailQueryVariables>;
 export const ProductAddReviewDocument = new TypedDocumentString(`
     mutation ProductAddReview($productId: ID!, $author: String!, $description: String!, $email: String!, $rating: Int!, $title: String!) {
   reviewCreate(
