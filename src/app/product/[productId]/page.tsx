@@ -183,6 +183,7 @@ export default async function ProductPage({
 				<ProductReviewsSection
 					productId={product?.product?.id || ""}
 					reviews={product.product?.reviews as unknown as Review[]}
+					rating={product.product?.rating || 0}
 				/>
 			</div>
 		</div>

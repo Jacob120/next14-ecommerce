@@ -15,7 +15,7 @@ export const SuggestedProductsList = async () => {
 	).sort(() => 0.5 - Math.random());
 
 	// Get the first 4 items from the shuffled array
-	const selectedProducts = shuffledProducts.slice(0, 4);
+	const selectedProducts = shuffledProducts.slice(0, 8);
 
 	return (
 		<aside data-testid="related-products">

@@ -93,6 +93,7 @@ export type MutationCartChangeItemQuantityArgs = {
 
 export type MutationCartCompleteArgs = {
   cartId: Scalars['ID']['input'];
+  userEmail: Scalars['String']['input'];
 };
 
 
@@ -294,7 +295,7 @@ export type CartGetByIdQueryVariables = Exact<{
 }>;
 
 
-export type CartGetByIdQuery = { cart?: { id: string, items: Array<{ quantity: number, product: { name: string, id: string, price: number } }> } | null };
+export type CartGetByIdQuery = { cart?: { id: string, items: Array<{ quantity: number, product: { name: string, id: string, price: number, categories: Array<{ name: string }>, images: Array<{ url: string, alt: string }> } }> } | null };
 
 export type CartRemoveProductMutationVariables = Exact<{
   cartId: Scalars['ID']['input'];
@@ -465,6 +466,13 @@ export const CartGetByIdDocument = new TypedDocumentString(`
         name
         id
         price
+        categories {
+          name
+        }
+        images {
+          url
+          alt
+        }
       }
     }
   }

@@ -1,5 +1,6 @@
 "use client";
 import { useOptimistic } from "react";
+import { Star } from "lucide-react";
 import { ReviewForm } from "@/components/molecules/ReviewForm";
 import { type Review } from "@/types";
 import { ReviewList } from "@/components/organisms/ReviewList";
@@ -7,9 +8,11 @@ import { ReviewList } from "@/components/organisms/ReviewList";
 export const ProductReviewsSection = ({
 	productId,
 	reviews,
+	rating,
 }: {
 	productId: string;
 	reviews: Review[];
+	rating: number;
 }) => {
 	// const [optimisticReview, setOptimisticReview] = useOptimistic(
 	// 	reviews,
@@ -26,8 +29,21 @@ export const ProductReviewsSection = ({
 				<h2 className=" text-2xl font-bold tracking-tight text-gray-900">
 					Customer Reviews
 				</h2>
-				<div className="mt-3 flex items-center">
-					<div className="flex items-center">Stars</div>
+				<div className="mt-3 flex items-center ">
+					{[1, 2, 3, 4, 5].map((index) => (
+						<Star
+							key={index}
+							className={`h-5 w-5 ${
+								rating && index <= rating
+									? "text-yellow-400"
+									: "text-gray-400"
+							}`}
+							fill="currentColor"
+						/>
+					))}
+					<p className="ml-3 font-medium text-slate-600">
+						Based on {reviews.length} reviews{" "}
+					</p>
 				</div>
 				<div className="mt-10">
 					<h3 className="text-lg font-medium text-gray-900">

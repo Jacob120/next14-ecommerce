@@ -1,3 +1,4 @@
+import { Star } from "lucide-react";
 import { type Review } from "@/types";
 
 export const ReviewList = ({ reviews }: { reviews: Review[] }) => {
@@ -7,14 +8,27 @@ export const ReviewList = ({ reviews }: { reviews: Review[] }) => {
 				{reviews &&
 					reviews?.map((review: Review, index) => (
 						<div key={index} className="py-12">
-							<div className="flex items-center">
-								<h3 className="text-lg font-medium text-gray-900">
+							<div className="flex flex-col font-medium">
+								<h3 className="text-lg  text-gray-900">
 									{review.author}
 								</h3>
-								<div className="ml-4 flex items-center">
+								<div className=" mt-1 flex items-center gap-3">
 									<p className="text-sm text-gray-500">
-										{review.rating}
+										{review.rating}/5
 									</p>
+									<div className="flex">
+										{[1, 2, 3, 4, 5].map((index) => (
+											<Star
+												key={index}
+												className={`h-4 w-4 ${
+													review.rating && index <= review.rating
+														? "text-yellow-400"
+														: "text-gray-400"
+												}`}
+												fill="currentColor"
+											/>
+										))}
+									</div>
 								</div>
 							</div>
 							<div className="mt-2 space-y-4 lg:grid lg:grid-cols-12 lg:gap-x-8">

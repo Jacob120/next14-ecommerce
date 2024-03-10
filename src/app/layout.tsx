@@ -3,6 +3,7 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import { ClerkProvider } from "@clerk/nextjs";
 import { NavBar } from "@/components/organisms/NavBar";
+import { Footer } from "@/components/organisms/Footer";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -24,11 +25,7 @@ export default function RootLayout({
 				<body className={inter.className}>
 					<NavBar />
 					<section className=" mx-auto">{children}</section>
-					<footer className=" mx-auto flex w-full bg-gray-100 sm:py-4">
-						<p className="mx-auto">
-							© {new Date().getFullYear()} Next.js, Inc.
-						</p>
-					</footer>
+					<Footer />
 					{modal}
 				</body>
 			</html>

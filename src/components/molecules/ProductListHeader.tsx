@@ -18,8 +18,8 @@ export const ProductListHeader = ({}: {}) => {
 		<div className="bg-gray-100">
 			<div className="mx-auto max-w-7xl px-8">
 				<div className="mx-auto py-8">
-					<div className="flex flex-row items-center justify-between">
-						<h2>Product List</h2>
+					<div className="flex flex-row items-center justify-between text-lg font-semibold">
+						<h2>Products List</h2>
 						<Select handleSortChange={handleSortChange} />
 					</div>
 				</div>

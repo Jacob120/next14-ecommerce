@@ -43,7 +43,6 @@ export default async function CategoryPage({
 
 	return (
 		<>
-			<h1>{category.name}</h1>
 			<ProductList products={products} />
 			<Pagination
 				totalPages={numOfPages}

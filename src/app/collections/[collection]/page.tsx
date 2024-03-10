@@ -34,13 +34,14 @@ export default async function CollectionPage({
 		(await getProductsByCollectionId(collection.id)) || [];
 
 	return (
-		<main className="mx-auto min-h-screen max-w-7xl">
-			<h1
-				className="pb-20 text-4xl font-extrabold first-letter:uppercase"
-				role="heading"
-			>
-				{collection.name}
-			</h1>
+		<main className="mx-auto min-h-screen">
+			<div className="w-full bg-gray-100">
+				<div className="mx-auto  max-w-7xl">
+					<h2 className="mx-auto py-8 text-lg font-semibold">
+						{collection.name}
+					</h2>
+				</div>
+			</div>
 			<ProductList products={productsInCollection} />
 		</main>
 	);
